@@ -4,6 +4,7 @@ console.log('JavaScript Sourced');
 $(document).ready(function() {
    console.log('jQuery Sourced');
    getOwnerNames();
+   $('#register_new_pet').on('click', registerNewPet)
 });
 
 
@@ -24,10 +25,20 @@ function getOwnerNames() {
 
 
 function displayOwnerNames(ownersArr) {
-    $('id=owner_name').empty();
-    $('id=owner_name').append('<option selected="selected" required>Your Name</option>');
+    $('#owner_name').empty();
+    $('#owner_name').append('<option selected="selected" required>Your Name</option>');
     for (var i = 0; i < ownersArr.length; i++) {
-        $('id=owner_name').append('<option>'+ ownersArr[i].first_name + ' ' +  ownersArr[i].first_name + '</option>');
+        $('#owner_name').append('<option>'+ ownersArr[i].first_name + ' ' +  ownersArr[i].first_name + '</option>');
 
     }
 }
+
+function registerNewPet() {
+    $.ajax({
+        method: 'POST',
+        url: '/pets',
+        success: function(response){
+          console.log('register new pet: ', response);
+        }
+      })
+    }
