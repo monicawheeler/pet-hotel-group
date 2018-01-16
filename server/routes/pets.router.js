@@ -33,6 +33,8 @@ router.get('/', (req, res) => { // START OF GET /PETS '/' route!
 
 //DELETE routes
 router.delete ('/:id', (req, res) => {
+    console.log('INSIDE THE DELETE ROUTER');
+    
     let queryText = `DELETE FROM pets WHERE id = $1`;
     pool.query(queryText, [req.params.id])
     .then((results) =>{
