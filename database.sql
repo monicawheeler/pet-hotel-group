@@ -12,7 +12,7 @@ CREATE TABLE pets (
 	pet_name VARCHAR(80) NOT NULL,
 	breed VARCHAR(80) NOT NULL,
 	color VARCHAR(80) NOT NULL,
-	is_checked_in BOOLEAN DEFAULT true,
+	is_checked_in BOOLEAN DEFAULT false,
 	owner_id INT REFERENCES owners  
 );
 
