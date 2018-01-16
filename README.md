@@ -5,3 +5,4 @@ Check-in your pets with this awesome application
 - [ ] Use the database.sql file to create the tables and test data
 - [ ] Run `npm install`
 - [ ] Run `npm start`
+- [ ] Open localhost:5000 in your friendly browser
