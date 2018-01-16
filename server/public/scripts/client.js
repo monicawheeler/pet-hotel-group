@@ -28,11 +28,11 @@ function displayAllPets(data) {
     $tableRow.append(`<td>${data.pet_name}</td>`);
     $tableRow.append(`<td>${data.breed}</td>`);
     $tableRow.append(`<td>${data.color}</td>`);
-    $tableRow.append(`<td><button class="editButton" value="${data.pets_id}">Edit</button></td>`);
-    $tableRow.append(`<td><button class="deleteButton" value="${data.pets_id}">Delete</button></td>`);
+    $tableRow.append(`<td><button class="btn btn-info editButton" value="${data.pets_id}">Edit</button></td>`);
+    $tableRow.append(`<td><button class="btn btn-danger deleteButton" value="${data.pets_id}">Delete</button></td>`);
     if (data.is_checked_in === false) {
         console.log('in the false');
-        $tableRow.append(`<td><button class="checkIn" value="${data.pets_id}">IN</button></td>`);
+        $tableRow.append(`<td><button class="btn btn-info checkIn" value="${data.pets_id}">IN</button></td>`);
     }
     else if (data.is_checked_in === true) {
         console.log('in the true');
