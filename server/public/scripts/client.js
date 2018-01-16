@@ -1,10 +1,8 @@
 console.log('JavaScript Sourced');
 
-
 $(document).ready(function() {
    console.log('jQuery Sourced');
-
-
+   $('#registerButton').on('click', addNewOwner);
    getAllPets()
 });
 
@@ -41,4 +39,22 @@ function displayAllPets(data) {
         $tableRow.append(`<td><button class="checkOut" value="${data.pets_id}">OUT</button></td>`);
     }
     $('#tableBody').append($tableRow);
+}
+
+function addNewOwner() {
+    const ownerToSend = {
+        first_name: $('#first_name').val(),
+        last_name: $('#last_name').val()
+    }
+    
+    // post/POST
+    $.ajax({
+        method: 'POST',
+        url: '/owners',
+        data: ownerToSend,
+        success: function(response) {
+            console.log('succesful post response:', response);
+            //getAllPets();
+        }
+    });
 }
