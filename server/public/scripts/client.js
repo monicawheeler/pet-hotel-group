@@ -7,17 +7,23 @@ $(document).ready(function() {
    $('#register_new_pet').on('click', registerNewPet)
    $('#registerButton').on('click', addNewOwner);
    $('#tableBody').on('click', '.deleteButton', deletePet);
-   $('#tableBody').on('click', 'tr:nth-child(2)', test);
+   $('#tableBody').on('click', '.editButton', editPet);
    getAllPets()
 });
 
-function test() {
-    let originalName = $(this).val();
-    let id = $(this).parent().data('id');
-    $(this).empty();
-    $('tr:nth-child(2)').empty();
-    $('tr:nth-child(2)').html('input type="text" value="' + originalName + '">')
-
+function editPet() {
+    let originalName = $('tr td:nth-child(2)').text();
+    let originalBreed = $('tr td:nth-child(3)').text();
+    let originalColor = $('tr td:nth-child(4)').text();
+    let id = $(this).data('id');
+    // $('tr td:nth-child(2)').empty();
+    // $('tr td:nth-child(3)').empty();
+    // $('tr td:nth-child(4)').empty();
+    $(this).parent().siblings().prev().empty();
+    $(this).parent().siblings().prev().html('<input type="text" value="' + originalName + '">')
+    // $('tr td:nth-child(2)').html('<input type="text" value="' + originalName + '">')
+    // $('tr td:nth-child(3)').html('<input type="text" value="' + originalBreed + '">')
+    // $('tr td:nth-child(4)').html('<input type="text" value="' + originalColor + '">')
 }
 
 
