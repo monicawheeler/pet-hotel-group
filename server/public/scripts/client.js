@@ -180,3 +180,29 @@ function updatePetStatus() {
         }   
     }
 }
+
+
+function getPetVisits() {
+    let id = /*THIS IS THE OWNER ID FROM DROPDOWN*/ $('#visits_owner_name option:selected').data('id')
+    $.ajax({
+        method: 'GET',
+        url: '/pets/visits' + id,
+        success: (response)=>{
+            console.log('Back from server with the visits table data: ');
+            $('#visitsTableBody').empty();
+            for (let i=0; i < response.length; i++) {
+                displayPetVisits(response[i]);
+            }
+        }
+    })
+}
+
+function displayPetVisits(data) {
+    $tableRow = $('<tr>');
+    $tableRow.append(`<td>${data.pet_name}</td>`);
+    $tableRow.append(`<td>${data.breed}</td>`);
+    $tableRow.append(`<td>${data.color}</td>`);
+    $tableRow.append(`<td>${data.check_in_date.substr(0, 10)}</td>`);
+    $tableRow.append(`<td>${data.check_out_date.substr(0, 10)}</td>`);
+    $('#tableBody').append($tableRow);
+}
