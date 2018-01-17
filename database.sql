@@ -19,7 +19,7 @@ CREATE TABLE pets (
 CREATE TABLE visits (
     id SERIAL PRIMARY KEY,
     check_in_date DATE DEFAULT now(),
-    check_out_date DATE,
+    check_out_date DATE,DEFAULT NULL
     pet_id INT REFERENCES pets
 );
 
@@ -30,3 +30,17 @@ VALUES ('Darian', 'Nas'), ('Monica', 'Wheeler'), ('Paul', 'Tiller'), ('Philip', 
 
 INSERT INTO pets (pet_name, color, breed, owner_id)
 VALUES ('Yuki', 'white', 'ferret', 1), ('Bodhi', 'white', 'golden retriever', 2), ('Millie', 'brown', 'mutt', 3), ('Halsey', 'gray', 'australian shepherd', 4);
+
+SELECT owners.id, owners.first_name, owners.last_name, pets.id AS pets_id, pets.pet_name, pets.breed, pets.color, pets.is_checked_in
+FROM owners
+JOIN pets ON owners.id = pets.owner_id;
+
+SELECT owners.id, owners.first_name, owners.last_name, pets.id AS pets_id, pets.pet_name, pets.breed, pets.color, pets.is_checked_in, visits.check_in_date, visits.check_out_date
+FROM owners
+JOIN pets ON owners.id = pets.owner_id
+JOIN visits ON pets.id = visits.pet_id
+ORDER BY owners.last_name, visits.check_out_date DESC;
+
+
+INSERT INTO visits (check_in_date, check_out_date, pet_id)
+VALUES ('2018-01-17','2018-10-10',1), ('2018-10-11', NULL,1), ('2018-01-15','2018-01-16',2), ('2018-01-17', NULL,2), ('2018-01-17','2018-10-10',3), ('2018-01-17', NULL,3),('2018-01-17','2018-10-10',4)
