@@ -96,7 +96,21 @@ function addNewOwner() {
         success: function(response) {
             console.log('succesful post response:', response);
             getOwnerNames();
-            $('.success-message').show();
+
+            // Hide alert message after timeout
+            setTimeout(function () {
+                $(".alert-success").fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 3000);
+            // display alert message when owner is added
+            $('.owners-registration').append(`
+                <p class="alert alert-success alert-dismissable success-message">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Owner successfully added!
+                </p>
+            `);
+
             $('#first_name').val('');
             $('#last_name').val('');
         }
