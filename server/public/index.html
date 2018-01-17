@@ -1,11 +1,45 @@
 <!DOCTYPE html>
 <head>
-    <title>Document</title>
+    <title>Pet Hotel California</title>
     <script src="vendors/jquery.min.js"></script>
     <script src="scripts/client.js"></script>
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    <h1>hello world</h1>
+    <h1>Owners and Pets</h1>
+    <div class="owners-registration">
+        <h2>Owners Registration</h2>
+        <input type="text" id="first_name" placeholder="First Name" />
+        <input type="text" id="last_name" placeholder="Last Name" />
+        <button class="btn btn-primary" id="registerButton">Register</button>
+    </div>
+    <div id="register_a_pet">
+        <h2>Pets</h2>
+            <label for="owner_name">Owner Name</label>
+            <select id="owner_name">
+              </select>
+              <label for="pet_name">Pet Name</label>
+              <input type="text" id="pet_name" value="" placeholder="Your Pet's Name" required>
+              <label for="breed">Breed</label>
+              <input type="text" id="breed" value="" placeholder="Your Pet's Breed" required>
+              <label for="color">Color</label>
+              <input type="text" id="color" value="" placeholder="Your Pet's Color" required>
+              <button id="register_new_pet">Add Pet</button>
+    </div>
+    <div class="petsTableContainer">
+        <table>
+            <thead>
+                <th>Owner</th>
+                <th>Pet</th>
+                <th>Breed</th>
+                <th>Color</th>
+                <th>Update</th>
+                <th>Delete</th>
+                <th>Check In/Out</th>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Table display appended here -->
+            </tbody>
+        </table>
 </body>
 </html>
