@@ -118,3 +118,48 @@ function deletePet() {
         })
     }
 }
+
+function updatePetStatus() {
+    if ($(this).classList.contains('checkIn')) {
+        if (confirm('Are you sure you want to Check In your pet?')) {
+            let id = $(this).val()
+            let petStatus = {
+                is_checked_in: true
+            }
+            console.log(id);
+            $.ajax({
+                method: 'PUT',
+                url: '/pets/' + id,
+                data: petStatus,
+                success: (response)=>{
+                    console.log('Inside updatePetStatus checkin PUT ajax: ', response);
+                    getAllPets()
+                },
+                error: ()=>{
+                    alert('Error was received in checking in your pet')
+                }
+            })
+        }   
+    }
+    else if ($(this).classList.contains('checkOut')) {
+        if (confirm('Are you sure you want to Check Out your pet?')) {
+            let id = $(this).val()
+            let petStatus = {
+                is_checked_in: false
+            }
+            console.log(id);
+            $.ajax({
+                method: 'PUT',
+                url: '/pets/' + id,
+                data: petStatus,
+                success: (response)=>{
+                    console.log('Inside updatePetStatus checkout PUT ajax: ', response);
+                    getAllPets()
+                },
+                error: ()=>{
+                    alert('Error was received in checking out your pet')
+                }
+            })
+        }   
+    }
+}
