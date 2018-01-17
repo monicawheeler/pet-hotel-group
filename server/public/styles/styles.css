@@ -1,3 +1,7 @@
+h1 {
+    text-align: center;
+}
+
 .owners-registration .form-control {
     display: inline-block;
     width: 47%;
@@ -6,6 +10,24 @@
 
 #registerButton {
     display: block;
-    margin: 0 auto 75px;
+    margin: 0 auto 25px;
     width: 50%;
+}
+
+#register_new_pet {
+    margin: 20px 0;
+}
+
+#register_a_pet .form-control {
+    margin-bottom: 20px;
+    width: 50%;
+}
+
+.small-title {
+    display: block;
+    font-size: 20px;
+}
+
+.custom-select {
+    margin-bottom: 20px;
 }

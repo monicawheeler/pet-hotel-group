@@ -8,6 +8,7 @@ $(document).ready(function() {
    $('#registerButton').on('click', addNewOwner);
    $('#tableBody').on('click', '.deleteButton', deletePet);
    $('#tableBody').on('click', '.editButton', editPet);
+   $('#tableBody').on('click', '.checkStatus', updatePetStatus);
    getAllPets()
 });
 
@@ -19,8 +20,8 @@ function editPet() {
     // $('tr td:nth-child(2)').empty();
     // $('tr td:nth-child(3)').empty();
     // $('tr td:nth-child(4)').empty();
-    $(this).parent().siblings().prev().empty();
-    $(this).parent().siblings().prev().html('<input type="text" value="' + originalName + '">')
+    $(this).parent().siblings().empty();
+    $(this).parent().siblings().html('<input type="text" value="' + originalName + '">')
     // $('tr td:nth-child(2)').html('<input type="text" value="' + originalName + '">')
     // $('tr td:nth-child(3)').html('<input type="text" value="' + originalBreed + '">')
     // $('tr td:nth-child(4)').html('<input type="text" value="' + originalColor + '">')
@@ -42,7 +43,7 @@ function getOwnerNames() {
 
 function displayOwnerNames(ownersArr) {
     $('#owner_name').empty();
-    $('#owner_name').append('<option selected="selected" required>Your Name</option>');
+    $('#owner_name').append('<option selected disabled>Your Name</option>');
     for (var i = 0; i < ownersArr.length; i++) {
         $('#owner_name').append('<option data-id="' + ownersArr[i].id + '">'+ ownersArr[i].first_name + ' ' +  ownersArr[i].last_name + '</option>');
 
@@ -91,10 +92,10 @@ function displayAllPets(data) {
     $tableRow.append(`<td><button class="btn btn-info editButton" value="${data.pets_id}">Edit</button></td>`);
     $tableRow.append(`<td><button class="btn btn-danger deleteButton" value="${data.pets_id}">Delete</button></td>`);
     if (data.is_checked_in === false) {
-        $tableRow.append(`<td><button class="btn btn-info checkIn" value="${data.pets_id}">CHECK IN</button></td>`);
+        $tableRow.append(`<td><button class="btn btn-info checkIn checkStatus" data-status="in" value="${data.pets_id}">CHECK IN</button></td>`);
     }
     else if (data.is_checked_in === true) {
-        $tableRow.append(`<td><button class="btn btn-info checkOut" value="${data.pets_id}">CHECK OUT</button></td>`);
+        $tableRow.append(`<td><button class="btn btn-info checkOut checkStatus" data-status="out" value="${data.pets_id}">CHECK OUT</button></td>`);
     }
     $('#tableBody').append($tableRow);
 }
@@ -103,7 +104,6 @@ function addNewOwner() {
     const ownerToSend = {
         first_name: $('#first_name').val(),
         last_name: $('#last_name').val()
-        
     }
     
     // post/POST
@@ -114,6 +114,23 @@ function addNewOwner() {
         success: function(response) {
             console.log('succesful post response:', response);
             getOwnerNames();
+
+            // Hide alert message after timeout
+            setTimeout(function () {
+                $(".alert-success").fadeTo(500, 0).slideUp(500, function () {
+                    $(this).remove();
+                });
+            }, 3000);
+            // display alert message when owner is added
+            $('.owners-registration').append(`
+                <p class="alert alert-success alert-dismissable success-message">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Owner successfully added!
+                </p>
+            `);
+
+            $('#first_name').val('');
+            $('#last_name').val('');
         }
     });
 }
@@ -133,5 +150,50 @@ function deletePet() {
                 alert('Error was received in deleting the pet data')
             }
         })
+    }
+}
+
+function updatePetStatus() {
+    if ($(this).data("status") == 'in') {
+        if (confirm('Are you sure you want to Check In your pet?')) {
+            let id = $(this).val()
+            let petStatus = {
+                is_checked_in: true
+            }
+            console.log(id);
+            $.ajax({
+                method: 'PUT',
+                url: '/pets/' + id,
+                data: petStatus,
+                success: (response)=>{
+                    console.log('Inside updatePetStatus checkin PUT ajax: ', response);
+                    getAllPets()
+                },
+                error: ()=>{
+                    alert('Error was received in checking in your pet')
+                }
+            })
+        }   
+    }
+    else if ($(this).data("status") == 'out') {
+        if (confirm('Are you sure you want to Check Out your pet?')) {
+            let id = $(this).val()
+            let petStatus = {
+                is_checked_in: false
+            }
+            console.log(id);
+            $.ajax({
+                method: 'PUT',
+                url: '/pets/' + id,
+                data: petStatus,
+                success: (response)=>{
+                    console.log('Inside updatePetStatus checkout PUT ajax: ', response);
+                    getAllPets()
+                },
+                error: ()=>{
+                    alert('Error was received in checking out your pet')
+                }
+            })
+        }   
     }
 }
