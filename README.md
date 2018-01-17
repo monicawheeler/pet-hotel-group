@@ -1,4 +1,4 @@
-# pet-hotel-group
+# Pet Hotel Application - Getting Started 
 Check-in your pets with this awesome application
 
 - [ ] Add a database called `pet_hotel`
