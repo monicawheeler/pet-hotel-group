@@ -11,31 +11,33 @@
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-        <nav class="navbar navbar-default">
-                <ul class="nav navbar-nav">
-                    <li class="navbar-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="navbar-item">
-                        <a class="nav-link" href="visits.html">Visits</a>
-                    </li>
-                </ul>
-            </nav>
-            <select id="owner_name" class="custom-select form-control"></select>
-            <button id="showVisitsButton">Show Visits</button>
-            <div class="petsTableContainer">
-                    <table class="table">
-                        <thead>
-                            <th>Pet</th>
-                            <th>Breed</th>
-                            <th>Color</th>
-                            <th>Check-In Date</th>
-                            <th>Check-Out Date</th>
-                        </thead>
-                        <tbody id="tableBody">
-                            <!-- Table display appended here -->
-                        </tbody>
-                    </table>
-                </div>
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <li class="navbar-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="navbar-item">
+                <a class="nav-link" href="visits.html">Visits</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <select id="owner_name" class="custom-select form-control"></select>
+        <button id="showVisitsButton" class="btn btn-primary">Show Visits</button>
+        <div class="petsTableContainer">
+            <table class="table">
+                <thead>
+                    <th>Pet</th>
+                    <th>Breed</th>
+                    <th>Color</th>
+                    <th>Check-In Date</th>
+                    <th>Check-Out Date</th>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Table display appended here -->
+                </tbody>
+            </table>
+        </div>  
+    </div>
 </body>
 </html>
