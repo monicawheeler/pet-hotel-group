@@ -58,6 +58,21 @@ router.put ('/:id', (req, res) => {
     });
 });
 
+router.put ('/update/:id', (req, res) => {
+    let queryText = `UPDATE pets
+                    SET name =$1, breed =$2, color=$3
+                     WHERE id = $4`;
+    pool.query(queryText, [req.body.pet_name, req.body.breed, req.body.color, req.params.id])
+    .then((results) =>{
+        console.log('updated pet info: ', results);        
+        res.send(results);
+    })
+    .catch((err) =>{
+        console.log('error updating pet info:', err);
+        res.sendStatus(500);
+    });
+});
+
 //DELETE routes
 router.delete ('/:id', (req, res) => {
     let queryText = `DELETE FROM pets WHERE id = $1`;
