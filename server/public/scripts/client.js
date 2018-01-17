@@ -25,7 +25,7 @@ function getOwnerNames() {
 
 function displayOwnerNames(ownersArr) {
     $('#owner_name').empty();
-    $('#owner_name').append('<option selected="selected" required>Your Name</option>');
+    $('#owner_name').append('<option selected disabled>Your Name</option>');
     for (var i = 0; i < ownersArr.length; i++) {
         $('#owner_name').append('<option data-id="' + ownersArr[i].id + '">'+ ownersArr[i].first_name + ' ' +  ownersArr[i].last_name + '</option>');
 
