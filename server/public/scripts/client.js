@@ -8,8 +8,13 @@ $(document).ready(function() {
    $('#registerButton').on('click', addNewOwner);
    $('#tableBody').on('click', '.deleteButton', deletePet);
    $('#tableBody').on('click', '.checkStatus', updatePetStatus);
-   getAllPets()
+   $('#showVisitsButton').on('click', getPetVisits);
+   if (location.pathname == '/') {
+    console.log('in the pathname');
+    getAllPets()
+   }
 });
+
 
 function getOwnerNames() {
     $.ajax({
@@ -179,4 +184,36 @@ function updatePetStatus() {
             })
         }   
     }
+}
+
+
+function getPetVisits() {
+    let id = $('#owner_name option:selected').data('id')
+    $.ajax({
+        method: 'GET',
+        url: '/pets/visits/' + id,
+        success: (response)=>{
+            console.log('Back from server with the visits table data: ');
+            $('#tableBody').empty();
+            console.log(response);
+            for (let i=0; i < response.length; i++) {
+                displayPetVisits(response[i]);
+            }
+        }
+    })
+}
+
+function displayPetVisits(data) {
+    $tableRow = $('<tr>');
+    $tableRow.append(`<td>${data.pet_name}</td>`);
+    $tableRow.append(`<td>${data.breed}</td>`);
+    $tableRow.append(`<td>${data.color}</td>`);
+    $tableRow.append(`<td>${data.check_in_date.substr(0, 10)}</td>`);
+    if (data.check_out_date == null) {
+        $tableRow.append(`<td>Pet is checked in</td>`);
+    }
+    else {
+    $tableRow.append(`<td>${data.check_out_date.substr(0, 10)}</td>`);
+    }
+    $('#tableBody').append($tableRow);
 }

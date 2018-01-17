@@ -31,3 +31,17 @@ h1 {
 .custom-select {
     margin-bottom: 20px;
 }
+
+.navbar-default {
+    background-color: #337ab7;
+}
+
+.navbar-default .navbar-nav>li>a {
+    color: #ffffff;
+    transition: all 300ms;
+}
+
+.navbar-default .navbar-nav>li>a:focus, 
+.navbar-default .navbar-nav>li>a:hover {
+    color: rgba(255,255,255,0.75);
+}
