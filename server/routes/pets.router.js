@@ -30,7 +30,7 @@ router.get('/', (req, res) => { // START OF GET /PETS '/' route!
 router.post('/', (req,res) => {
    
     const queryText = 'INSERT INTO pets (pet_name, breed, color, owner_id) VALUES ($1, $2, $3, $4)';
-    pool.query(queryText, [req.body.pet_name, req.body.breed, req.body.color, req.body.owner_id])
+    pool.query(queryText, [req.body.pet_name, req.body.breed, req.body.color, req.body.owner_id])//Start of initial post query
         .then((result) => {
             console.log('registed new pet');
             res.sendStatus(201);
@@ -38,7 +38,7 @@ router.post('/', (req,res) => {
         .catch((err) => {
             console.log('Oh no!', err);
             res.sendStatus(500);
-        })
+        })//End of initial post query
 
 });
 //PUT routes
@@ -48,14 +48,58 @@ router.put ('/:id', (req, res) => {
                      SET  is_checked_in = $1
                      WHERE id = $2`;
     pool.query(queryText, [req.body.is_checked_in, req.params.id])
-    .then((results) =>{
-        console.log('query update pet status results: ', results);        
-        res.send(results);
-    })
-    .catch((err) =>{
-        console.log('error making update pet status query:', err);
-        res.sendStatus(500);
-    });
+        .then((results) =>{
+            console.log('LOGING REQ.BODY.IS_CHECKED_IN: ', req.body.is_checked_in);    
+            if (req.body.is_checked_in == 'true') {
+                let queryText = `INSERT INTO visits (pet_id)
+                             VALUES ($1)`
+                             pool.query(queryText, [req.params.id])
+                             .then((results) =>{
+                                 console.log('IN INSERT NEW TIME TO VISITS');        
+                                 res.sendStatus(201);
+                             
+                             })
+                             .catch((err) =>{
+                                 console.log('error making update pet status query:', err);
+                                 res.sendStatus(500);
+                             });
+            }
+            else if (req.body.is_checked_in == 'false') {
+                let queryText = `SELECT visits.id 
+                                 FROM visits
+                                 WHERE pet_id = $1 AND check_out_date is NULL;`
+                             // have to update quertText to show WHERE is the visits ID not the pet_id. 
+                             pool.query(queryText, [req.params.id])
+                             .then((results) =>{
+                                 
+                                let queryText = `UPDATE visits 
+                                 SET check_out_date = now()
+                                 WHERE pet_id = $1 AND visits.id = $2;`
+                             // have to update quertText to show WHERE is the visits ID not the pet_id. 
+                                pool.query(queryText, [req.params.id, results.rows[0].id])
+                                    .then((results) =>{
+                                        console.log('IN INSERT CHECKOUT TIME TO VISITS');        
+                                        res.sendStatus(201);
+                                    
+                                    })
+                                    .catch((err) =>{
+                                        console.log('error making update pet status query:', err);
+                                        res.sendStatus(500);
+                                    });
+
+                             
+                             })
+                             .catch((err) =>{
+                                 console.log('error making update pet status query:', err);
+                                 res.sendStatus(500);
+                             });
+            }
+
+        })
+        .catch((err) =>{
+            console.log('error making update pet status query:', err);
+            res.sendStatus(500);
+        });
 });
 
 //DELETE routes
