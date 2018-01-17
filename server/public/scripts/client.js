@@ -86,7 +86,6 @@ function addNewOwner() {
     const ownerToSend = {
         first_name: $('#first_name').val(),
         last_name: $('#last_name').val()
-        
     }
     
     // post/POST
@@ -97,6 +96,9 @@ function addNewOwner() {
         success: function(response) {
             console.log('succesful post response:', response);
             getOwnerNames();
+            $('.success-message').show();
+            $('#first_name').val('');
+            $('#last_name').val('');
         }
     });
 }
