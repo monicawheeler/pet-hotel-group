@@ -60,7 +60,7 @@ router.put ('/:id', (req, res) => {
 
 router.put ('/update/:id', (req, res) => {
     let queryText = `UPDATE pets
-                    SET name =$1, breed =$2, color=$3
+                    SET pet_name =$1, breed =$2, color=$3
                      WHERE id = $4`;
     pool.query(queryText, [req.body.pet_name, req.body.breed, req.body.color, req.params.id])
     .then((results) =>{
