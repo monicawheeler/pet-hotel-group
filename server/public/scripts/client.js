@@ -7,8 +7,19 @@ $(document).ready(function() {
    $('#register_new_pet').on('click', registerNewPet)
    $('#registerButton').on('click', addNewOwner);
    $('#tableBody').on('click', '.deleteButton', deletePet);
+   $('#tableBody').on('click', 'tr:nth-child(2)', test);
    getAllPets()
 });
+
+function test() {
+    let originalName = $(this).val();
+    let id = $(this).parent().data('id');
+    $(this).empty();
+    $('tr:nth-child(2)').empty();
+    $('tr:nth-child(2)').html('input type="text" value="' + originalName + '">')
+
+}
+
 
 function getOwnerNames() {
     $.ajax({
