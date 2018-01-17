@@ -1,5 +1,11 @@
-.form-control {
+.owners-registration .form-control {
     display: inline-block;
     width: 47%;
     margin: 1%;
+}
+
+#registerButton {
+    display: block;
+    margin: 0 auto 75px;
+    width: 50%;
 }

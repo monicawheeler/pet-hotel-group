@@ -33,7 +33,6 @@ function displayOwnerNames(ownersArr) {
 }
 
 function registerNewPet() {
-    
     let newPetToSend = {
     pet_name: $('#pet_name').val(),
     breed: $('#breed').val(),
@@ -72,13 +71,13 @@ function displayAllPets(data) {
     $tableRow.append(`<td>${data.pet_name}</td>`);
     $tableRow.append(`<td>${data.breed}</td>`);
     $tableRow.append(`<td>${data.color}</td>`);
-    $tableRow.append(`<td><button class="editButton" value="${data.pets_id}">Edit</button></td>`);
-    $tableRow.append(`<td><button class="deleteButton" value="${data.pets_id}">Delete</button></td>`);
+    $tableRow.append(`<td><button class="btn btn-info editButton" value="${data.pets_id}">Edit</button></td>`);
+    $tableRow.append(`<td><button class="btn btn-danger deleteButton" value="${data.pets_id}">Delete</button></td>`);
     if (data.is_checked_in === false) {
-        $tableRow.append(`<td><button class="checkIn" value="${data.pets_id}">CHECK IN</button></td>`);
+        $tableRow.append(`<td><button class="btn btn-info checkIn" value="${data.pets_id}">CHECK IN</button></td>`);
     }
     else if (data.is_checked_in === true) {
-        $tableRow.append(`<td><button class="checkOut" value="${data.pets_id}">CHECK OUT</button></td>`);
+        $tableRow.append(`<td><button class="btn btn-info checkOut" value="${data.pets_id}">CHECK OUT</button></td>`);
     }
     $('#tableBody').append($tableRow);
 }
