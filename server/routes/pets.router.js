@@ -30,15 +30,37 @@ router.get('/', (req, res) => { // START OF GET /PETS '/' route!
 router.post('/', (req,res) => {
    
     const queryText = 'INSERT INTO pets (pet_name, breed, color, owner_id) VALUES ($1, $2, $3, $4)';
-    pool.query(queryText, [req.body.pet_name, req.body.breed, req.body.color, req.body.owner_id])
+    pool.query(queryText, [req.body.pet_name, req.body.breed, req.body.color, req.body.owner_id])//Start of initial post query
         .then((result) => {
             console.log('registed new pet');
-            res.sendStatus(201);
+            const queryText = `SELECT pets.id FROM pets
+                               WHERE pets.pet_name = $1 AND pets.owner_id = $2`; //Cause different owners can have same pet names.
+            pool.query(queryText, [req.body.pet_name, req.body.owner_id]) // Start of query to pull the new pets id
+                .then((result) => {
+
+                    const queryText = `INSERT INTO visits (pet_id)
+                                       VALUES ($1)`;
+                    pool.query(queryText, [result.rows[0].id]) // Start of query to POST data into the visits
+                        .then((result) => {
+                            console.log('IN THE RESULTS OF SELECT PETS.ID FROM PETS', result.rows[0]);
+                            res.sendStatus(201);
+                        })
+                        .catch((err) => {
+                            console.log('Oh no!', err);
+                            res.sendStatus(500);
+                        }) // END of query to POST data into the visits
+                    
+                })
+                .catch((err) => {
+                    console.log('Oh no!', err);
+                    res.sendStatus(500);
+                }) // END of query to pull the new pets id
+
         })
         .catch((err) => {
             console.log('Oh no!', err);
             res.sendStatus(500);
-        })
+        })//End of initial post query
 
 });
 //PUT routes
