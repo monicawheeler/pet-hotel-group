@@ -7,6 +7,7 @@ $(document).ready(function() {
    $('#register_new_pet').on('click', registerNewPet)
    $('#registerButton').on('click', addNewOwner);
    $('#tableBody').on('click', '.deleteButton', deletePet);
+   $('#tableBody').on('click', '.checkStatus', updatePetStatus);
    getAllPets()
 });
 
@@ -74,10 +75,10 @@ function displayAllPets(data) {
     $tableRow.append(`<td><button class="btn btn-info editButton" value="${data.pets_id}">Edit</button></td>`);
     $tableRow.append(`<td><button class="btn btn-danger deleteButton" value="${data.pets_id}">Delete</button></td>`);
     if (data.is_checked_in === false) {
-        $tableRow.append(`<td><button class="btn btn-info checkIn" value="${data.pets_id}">CHECK IN</button></td>`);
+        $tableRow.append(`<td><button class="btn btn-info checkIn checkStatus" data-status="in" value="${data.pets_id}">CHECK IN</button></td>`);
     }
     else if (data.is_checked_in === true) {
-        $tableRow.append(`<td><button class="btn btn-info checkOut" value="${data.pets_id}">CHECK OUT</button></td>`);
+        $tableRow.append(`<td><button class="btn btn-info checkOut checkStatus" data-status="out" value="${data.pets_id}">CHECK OUT</button></td>`);
     }
     $('#tableBody').append($tableRow);
 }
@@ -120,7 +121,7 @@ function deletePet() {
 }
 
 function updatePetStatus() {
-    if ($(this).classList.contains('checkIn')) {
+    if ($(this).data("status") == 'in') {
         if (confirm('Are you sure you want to Check In your pet?')) {
             let id = $(this).val()
             let petStatus = {
@@ -141,7 +142,7 @@ function updatePetStatus() {
             })
         }   
     }
-    else if ($(this).classList.contains('checkOut')) {
+    else if ($(this).data("status") == 'out') {
         if (confirm('Are you sure you want to Check Out your pet?')) {
             let id = $(this).val()
             let petStatus = {

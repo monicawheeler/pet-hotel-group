@@ -43,11 +43,23 @@ router.post('/', (req,res) => {
 });
 //PUT routes
 
+router.put ('/:id', (req, res) => {
+    let queryText = `UPDATE pets
+                     SET  is_checked_in = $1
+                     WHERE id = $2`;
+    pool.query(queryText, [req.body.is_checked_in, req.params.id])
+    .then((results) =>{
+        console.log('query update pet status results: ', results);        
+        res.send(results);
+    })
+    .catch((err) =>{
+        console.log('error making update pet status query:', err);
+        res.sendStatus(500);
+    });
+});
 
 //DELETE routes
 router.delete ('/:id', (req, res) => {
-    console.log('INSIDE THE DELETE ROUTER');
-    
     let queryText = `DELETE FROM pets WHERE id = $1`;
     pool.query(queryText, [req.params.id])
     .then((results) =>{
