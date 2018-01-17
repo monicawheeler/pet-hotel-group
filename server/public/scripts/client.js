@@ -7,15 +7,30 @@ $(document).ready(function() {
    $('#register_new_pet').on('click', registerNewPet)
    $('#registerButton').on('click', addNewOwner);
    $('#tableBody').on('click', '.deleteButton', deletePet);
+   $('#tableBody').on('click', '.editButton', editPet);
    $('#tableBody').on('click', '.checkStatus', updatePetStatus);
+   $('#tableBody').on('click', '.update_pet', updatePetInformation);
    $('#showVisitsButton').on('click', getPetVisits);
    if (location.pathname == '/') {
     console.log('in the pathname');
     getAllPets()
    }
+   getAllPets()
 });
-
-
+function editPet() {
+        let originalName = $(this).parent().siblings('.name_of_pet').text();
+        let originalBreed = $(this).parent().siblings('.breed_of_pet').text();
+        let originalColor = $(this).parent().siblings('.color_of_pet').text();
+        let id = $(this).data('id');
+        // $(this).parent().siblings('.name_of_pet').empty();
+        // $(this).parent().siblings('.breed_of_pet').empty();
+        // $(this).parent().siblings('.color_of_pet').empty();
+       $(this).parent().siblings('.name_of_pet').html('<input class="name_of_pet_input" type="text" value="' + originalName + '">');
+       $(this).parent().siblings('.breed_of_pet').html('<input class="breed_of_pet_input" type="text" value="' + originalBreed + '">');
+       $(this).parent().siblings('.color_of_pet').html('<input class="color_of_pet_input" type="text" value="' + originalColor + '">');
+       $(this).text('Update');
+       $(this).removeClass('editButton').addClass('update_pet');
+    }
 function getOwnerNames() {
     $.ajax({
         method: 'GET',
@@ -72,11 +87,11 @@ function getAllPets() {
 }
 
 function displayAllPets(data) {
-    $tableRow = $('<tr>');
+    $tableRow = $(`<tr data-id="${data.pets_id}">`);
     $tableRow.append(`<td>${data.last_name}, ${data.first_name}</td>`);
-    $tableRow.append(`<td>${data.pet_name}</td>`);
-    $tableRow.append(`<td>${data.breed}</td>`);
-    $tableRow.append(`<td>${data.color}</td>`);
+    $tableRow.append(`<td class="name_of_pet">${data.pet_name}</td>`);
+    $tableRow.append(`<td class="breed_of_pet">${data.breed}</td>`);
+    $tableRow.append(`<td class="color_of_pet">${data.color}</td>`);
     $tableRow.append(`<td><button class="btn btn-info editButton" value="${data.pets_id}">Edit</button></td>`);
     $tableRow.append(`<td><button class="btn btn-danger deleteButton" value="${data.pets_id}">Delete</button></td>`);
     if (data.is_checked_in === false) {
@@ -123,10 +138,33 @@ function addNewOwner() {
     });
 }
 
+function updatePetInformation() {
+    let id = $(this).parents('tr').data('id');
+    console.log($(this).parent().parent().find('.name_of_pet_input').val());
+    const updatedPetInfo = {
+        id: id,
+        pet_name: $(this).parent().parent().find('.name_of_pet_input').val(),
+        breed: $(this).parent().parent().find('.breed_of_pet_input').val(),
+        color: $(this).parent().parent().find('.color_of_pet_input').val()
+    }
+    console.log(updatedPetInfo);
+    
+    $.ajax({
+        method: 'PUT',
+        url: '/pets/update/' + id,
+        data: updatedPetInfo,
+        success: (response)=>{
+            console.log('put update pets: ', response);
+            getAllPets()
+        },
+        error: ()=>{
+            console.log('error updating pet info', response);
+        }
+    })
+}   
+    
 function deletePet() {
     if (confirm('Are you sure you want to remove your pet?')) {
-        let id = $(this).val()
-        console.log(id);
         $.ajax({
             method: 'DELETE',
             url: '/pets/' + id,
