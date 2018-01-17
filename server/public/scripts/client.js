@@ -2,11 +2,55 @@ console.log('JavaScript Sourced');
 
 $(document).ready(function() {
    console.log('jQuery Sourced');
+   getOwnerNames();
+   //event listeners
+   $('#register_new_pet').on('click', registerNewPet)
    $('#registerButton').on('click', addNewOwner);
    $('#tableBody').on('click', '.deleteButton', deletePet);
    getAllPets()
 });
 
+function getOwnerNames() {
+    $.ajax({
+        method: 'GET',
+        url: '/owners',
+        success: function(response){
+          console.log('getting owner names: ', response);
+         displayOwnerNames(response);
+        }
+      })
+    }
+
+
+
+function displayOwnerNames(ownersArr) {
+    $('#owner_name').empty();
+    $('#owner_name').append('<option selected="selected" required>Your Name</option>');
+    for (var i = 0; i < ownersArr.length; i++) {
+        $('#owner_name').append('<option data-id="' + ownersArr[i].id + '">'+ ownersArr[i].first_name + ' ' +  ownersArr[i].last_name + '</option>');
+
+    }
+}
+
+function registerNewPet() {
+    
+    let newPetToSend = {
+    pet_name: $('#pet_name').val(),
+    breed: $('#breed').val(),
+    color: $('#color').val(),
+    owner_id: $('#owner_name option:selected').data('id')
+    }
+    console.log(newPetToSend);
+    $.ajax({
+        method: 'POST',
+        url: '/pets',
+        data: newPetToSend,
+        success: function(response){
+          console.log('register new pet: ', response);
+          getAllPets()
+        }
+      })
+    }
 
 function getAllPets() {
     $.ajax({
@@ -24,17 +68,17 @@ function getAllPets() {
 
 function displayAllPets(data) {
     $tableRow = $('<tr>');
-    $tableRow.append(`<td>${data.first_name} ${data.last_name}</td>`);
+    $tableRow.append(`<td>${data.last_name}, ${data.first_name}</td>`);
     $tableRow.append(`<td>${data.pet_name}</td>`);
     $tableRow.append(`<td>${data.breed}</td>`);
     $tableRow.append(`<td>${data.color}</td>`);
     $tableRow.append(`<td><button class="editButton" value="${data.pets_id}">Edit</button></td>`);
     $tableRow.append(`<td><button class="deleteButton" value="${data.pets_id}">Delete</button></td>`);
     if (data.is_checked_in === false) {
-        $tableRow.append(`<td><button class="checkIn" value="${data.pets_id}">IN</button></td>`);
+        $tableRow.append(`<td><button class="checkIn" value="${data.pets_id}">CHECK IN</button></td>`);
     }
     else if (data.is_checked_in === true) {
-        $tableRow.append(`<td><button class="checkOut" value="${data.pets_id}">OUT</button></td>`);
+        $tableRow.append(`<td><button class="checkOut" value="${data.pets_id}">CHECK OUT</button></td>`);
     }
     $('#tableBody').append($tableRow);
 }
@@ -43,6 +87,7 @@ function addNewOwner() {
     const ownerToSend = {
         first_name: $('#first_name').val(),
         last_name: $('#last_name').val()
+        
     }
     
     // post/POST
@@ -52,7 +97,7 @@ function addNewOwner() {
         data: ownerToSend,
         success: function(response) {
             console.log('succesful post response:', response);
-            //getAllPets();
+            getOwnerNames();
         }
     });
 }
