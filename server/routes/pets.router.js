@@ -72,4 +72,30 @@ router.delete ('/:id', (req, res) => {
     });
 });
 
+// VISITS PAGE ROUTES
+
+//GET routes
+
+router.get('/visits', (req, res) => { // START OF GET /PETS '/visits' route!
+
+    const queryText = `SELECT owners.id, owners.first_name, owners.last_name, pets.id AS pets_id, pets.pet_name, pets.breed, pets.color, pets.is_checked_in, visits.check_in_date, visits.check_out_date
+                       FROM owners
+                       JOIN pets ON owners.id = pets.owner_id
+                       JOIN visits ON pets.id = visits.pet_id
+                       ORDER BY owners.last_name, visits.check_out_date DESC;`
+    pool.query(queryText) // START OF FIRST GET QUERY
+        // runs on successful query
+        .then((result) => {
+            console.log('"/" Results GET query for visits: ', result.rows); 
+            res.send(result.rows);
+        })
+        // error handling
+        .catch((err) => {
+            console.log('error making "/visits" GET for visits: ', err);
+            res.sendStatus(500);
+        }); // END OF FIRST GET QUERY
+
+}); // End of GET /PETS '/visits' visits page route!
+
+
 module.exports = router;
