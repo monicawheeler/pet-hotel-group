@@ -19,7 +19,7 @@ CREATE TABLE pets (
 CREATE TABLE visits (
     id SERIAL PRIMARY KEY,
     check_in_date DATE DEFAULT now(),
-    check_out_date DATE,DEFAULT NULL
+    check_out_date DATE DEFAULT NULL,
     pet_id INT REFERENCES pets
 );
 
@@ -33,3 +33,4 @@ VALUES ('Yuki', 'white', 'ferret', 1), ('Bodhi', 'white', 'golden retriever', 2)
 
 INSERT INTO visits (check_in_date, check_out_date, pet_id)
 VALUES ('2018-01-17','2018-10-10',1), ('2018-10-11', NULL,1), ('2018-01-15','2018-01-16',2), ('2018-01-17', NULL,2), ('2018-01-17','2018-10-10',3), ('2018-01-17', NULL,3),('2018-01-17','2018-10-10',4);
+
