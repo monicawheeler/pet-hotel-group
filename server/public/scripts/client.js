@@ -15,7 +15,6 @@ $(document).ready(function() {
     console.log('in the pathname');
     getAllPets()
    }
-   getAllPets()
 });
 function editPet() {
         let originalName = $(this).parent().siblings('.name_of_pet').text();
@@ -165,6 +164,8 @@ function updatePetInformation() {
     
 function deletePet() {
     if (confirm('Are you sure you want to remove your pet?')) {
+        let id = $(this).val()
+        console.log(id);
         $.ajax({
             method: 'DELETE',
             url: '/pets/' + id,
